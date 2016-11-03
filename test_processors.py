@@ -4,7 +4,8 @@ from request_handler import RequestHandler
 from hashlib import sha256
 from installer import Installer
 
-Installer.install()
+installer = Installer()
+installer.install()
 
 class TestProcessor(unittest.TestCase):
     rh = RequestHandler()
