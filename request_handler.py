@@ -1,6 +1,7 @@
-import json, logging, os
+import json, logging, os, psycopg2
 from processors import Processor, cc, sc, BadRequest
 from flask import Flask, request as flask_request
+from urllib.parse import urlparse
 
 app = Flask(__name__)
 
@@ -111,7 +112,25 @@ class RequestHandler:
 
         return str(response)
 
-    @classmethod
+    @app.route('/key', methods=['GET'])
+    def get_key():
+        url = urlparse(os.environ['DATABASE_URL'])
+        db = psycopg2.connect(database=url.path[1:],
+                              user=url.username,
+                              password=url.password,
+                              host=url.hostname,
+                              port=url.port)
+
+        c = db.cursor()
+
+        c.execute('''SELECT pub_key FROM key''')
+        key = c.fetchone()
+
+        c.close()
+        db.close()
+
+        return ' '.join(key)
+
     def run(self):
         app.run(debug=True, host=os.getenv('IP', '0.0.0.0'), port=int(os.getenv('PORT', 8080)))
 
