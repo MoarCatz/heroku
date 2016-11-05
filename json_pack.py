@@ -3,13 +3,16 @@ from enum import IntEnum
 from time import time
 from random import randint
 
+
 def pack(data):
     return json.dumps(data, separators = (',', ':'))
+
 
 def packed_info(data, message):
     print(message)
     print(pack(data)[1:-1])
     print()
+
 
 class ClientCodes(IntEnum):
     register = 0
@@ -41,6 +44,7 @@ class ClientCodes(IntEnum):
     get_add_requests = 26
     decline_add_request = 27
     set_image = 28
+
 
 class ServerCodes(IntEnum):
     login_error = 0
@@ -74,6 +78,7 @@ class ServerCodes(IntEnum):
     add_requests = 28
     decline_add_request_succ = 29
     set_image_succ = 30
+
 
 def main():
     cc = ClientCodes
@@ -379,6 +384,7 @@ def main():
 
     data = (sc.set_image_succ, 'request_id')
     packed_info(data, 'Confirm setting the profile image')
+
 
 if __name__ == '__main__':
     main()

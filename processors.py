@@ -9,8 +9,10 @@ sample_img = (b'\x89PNG\r\n\x1a\n\x00\x00\x00\rIHDR'
               b'\x0cIDATx\x9cc```\x00\x00\x00\x04\x00'
               b'\x01\xf6\x178U\x00\x00\x00\x00IEND\xaeB`\x82')
 
+
 class BadRequest(Exception):
     """Класс исключений для индикации логической ошибки в запросе"""
+
 
 class ClientCodes():
     """Перечисление кодов запросов от клиента"""
@@ -44,6 +46,7 @@ class ClientCodes():
     decline_add_request = 27
     set_image = 28
     get_dialogs = 29
+
 
 class ServerCodes():
     """Перечисление кодов запросов от сервера"""
@@ -84,6 +87,7 @@ cc = ClientCodes
 sc = ServerCodes
 
 # Add notificators about events
+
 
 class Processor:
     # Парсинг ссылки на базу данных
@@ -237,7 +241,7 @@ class Processor:
         else:
             c.execute('''UPDATE d{} SET sender = '~' || %s
                          WHERE sender = %s'''.format(dialog),
-                                                  (user, user))
+                      (user, user))
         # Диалог с номером dialog удаляется из диалогов пользователя user
         self._remove_from(user, str(dialog), 'dialogs')
         self.db.commit()
@@ -273,7 +277,6 @@ class Processor:
         c.close()
         return dialogs[-1] + 1
 
-
     def register(self, request_id, ip, nick, pswd):
         """Зарегистрироваться с именем nick и хэшем pswd пароля"""
         if not self._valid_nick(nick):
@@ -289,7 +292,7 @@ class Processor:
                                      ARRAY[]::text[],
                                      ARRAY[]::text[],
                                      ARRAY[]::text[])''',
-                         (nick, pswd))
+                          (nick, pswd))
 
                 c.execute('''INSERT INTO profiles
                              VALUES (%s, '', '', 0, '', E'')''', (nick,))
@@ -609,7 +612,7 @@ class Processor:
         c = self.db.cursor()
         c.execute('''SELECT name FROM users
                      WHERE name = %s AND %s = ANY(friends::text[])''',
-                       (nick, user))
+                  (nick, user))
         if not c.fetchone():
             raise BadRequest
         self._add_to(nick, user, 'favorites')
