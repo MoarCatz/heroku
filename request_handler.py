@@ -5,6 +5,7 @@ from urllib.parse import urlparse
 
 app = Flask(__name__)
 
+
 class RequestHandler:
     pr = Processor()
     handler_map = {
@@ -132,7 +133,9 @@ class RequestHandler:
         return ' '.join(key)
 
     def run(self):
-        app.run(debug=True, host=os.getenv('IP', '0.0.0.0'), port=int(os.getenv('PORT', 8080)))
+        app.run(debug=True, host=os.getenv('IP', '0.0.0.0'),
+                port=int(os.getenv('PORT', 8080)))
+
 
 if __name__ == "__main__":
     log_level = logging.DEBUG

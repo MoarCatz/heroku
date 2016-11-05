@@ -7,6 +7,7 @@ from installer import Installer
 installer = Installer()
 installer.install()
 
+
 class TestProcessor(unittest.TestCase):
     rh = RequestHandler()
     unpack = rh.unpack_resp
@@ -748,9 +749,9 @@ class TestProcessor(unittest.TestCase):
                                      ARRAY[]::text[])''', (user1,))
 
         resp = self.unpack(delete_from_friends(self.request_id,
-                                           self.ip,
-                                           self.session_id,
-                                           user1))
+                                               self.ip,
+                                               self.session_id,
+                                               user1))
         exp = (sc.delete_from_friends_succ,
                [self.request_id])
         self.assertTupleEqual(resp, exp)
@@ -1571,6 +1572,7 @@ class TestProcessor(unittest.TestCase):
 
         self.pr.db.commit()
         c.close()
+
 
 if __name__ == '__main__':
     unittest.main()

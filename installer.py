@@ -1,6 +1,7 @@
 import os, psycopg2, rsa
 from urllib.parse import urlparse
 
+
 class Installer:
     def connect(self):
         self.url = urlparse(os.environ["DATABASE_URL"])
@@ -61,6 +62,7 @@ class Installer:
         self.connect()
         self.create_database()
         self.seed_database()
+
 
 if __name__ == '__main__':
     Installer().install()
