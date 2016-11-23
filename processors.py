@@ -47,6 +47,7 @@ class ClientCodes():
     decline_add_request = 27
     set_image = 28
     get_dialogs = 29
+    is_up = 30
 
 
 class ServerCodes():
