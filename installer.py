@@ -35,7 +35,7 @@ class Installer:
         c.execute('''CREATE TABLE sessions (name text,
                                             pub_key text ARRAY,
                                             ip text UNIQUE,
-                                            last_active text)''')
+                                            last_active bigint)''')
 
         c.execute('''CREATE TABLE requests (from_who text,
                                             to_who text,
@@ -43,6 +43,9 @@ class Installer:
 
         c.execute('''CREATE TABLE key (pub_key text ARRAY,
                                        priv_key text ARRAY)''')
+
+        c.execute('''CREATE TABLE banned (ip text UNIQUE,
+                                          ban_time bigint)''')
 
         self.db.commit()
         c.close()

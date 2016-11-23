@@ -32,13 +32,24 @@ log.info('starting up')
 stamp = datetime.now()
 log.debug('current timestamp is' + str(stamp.timestamp()))
 
-# Вычитаем два часа
-stamp -= timedelta(hours = 2)
-log.debug('will remove everything older than' + str(stamp.timestamp()))
+# Вычитаем два часа и записываем в stamp_one
+stamp_one = stamp - timedelta(hours = 2)
+log.debug('will remove everything older than ' + str(stamp_one.timestamp() +
+          ' for inactivity'))
 
-# Удаляем все записи, в которых время меньше stamp
+# Вычитаем один день и записываем в stamp_two
+stamp_two = stamp - timedelta(days = 1)
+log.debug('will remove everything older than ' + str(stamp_one.timestamp() +
+          ' for exceptions'))
+
+# Удаляем все записи, в которых время меньше stamp_one
 c.execute('''DELETE FROM sessions
-             WHERE last_active < %s''', (str(stamp.timestamp()), ))
+             WHERE last_active < %s''', (int(stamp_one.timestamp()), ))
+
+# Удаляем все записи, в которых время меньше stamp_two
+c.execute('''DELETE FROM sessions
+             WHERE last_active < %s''', (int(stamp_two.timestamp()), ))
+
 log.info('done')
 
 db.commit()

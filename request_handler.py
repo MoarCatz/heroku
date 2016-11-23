@@ -77,6 +77,7 @@ class RequestHandler:
         except IndexError:
             # Если заголовок X-Forwarded-For пуст, игнорируем
             log.error('failed to get real IP address')
+
             return b''
 
         log.info('received request from {}'.format(address))
@@ -85,39 +86,50 @@ class RequestHandler:
             request = self.pr._decrypt(enc_request)
             log.info('decrypted request successfully')
         except BadRequest:
-            # Если расшифровать запрос не удалось, игнорируем
+            # Если расшифровать запрос не удалось, блокируем IP-адрес отправителя
             log.error('failed to decrypt request')
             log.debug('request: {}'.format(request))
+            self.pr._ban_ip(address)
+            log.info('banned ip: {}'.format(address))
             return b''
 
         try:
             code, data = self.unpack_req(request)
         except ValueError:
-            # Если распаковать запрос не удалось, игнорируем
+            # Если распаковать запрос не удалось, блокируем IP-адрес отправителя
             log.error('failed to decode request')
             log.debug('request: {}'.format(request))
+            self.pr._ban_ip(address)
+            log.info('banned ip: {}'.format(address))
             return b''
 
         is_o_request = code in self.o_codes
         if not is_o_request:
             sign = flask_request.headers.get('Request-Signature', '')
             if not sign:
-                # Если подпись не указана, игнорируем
+                # Если подпись не указана, блокируем IP-адрес отправителя
                 log.error('no signature for an N-request')
+                self.pr._ban_ip(address)
+                log.info('banned ip: {}'.format(address))
                 return b''
 
             try:
                 pub_key = self.pr._get_public_key(address)
             except BadRequest:
-                # Если нет сессии, открытой с IP-адреса address, игнорируем
+                # Если нет сессии, открытой с IP-адреса address,
+                # блокируем IP-адрес отправителя
                 log.error('failed to get public key')
+                self.pr._ban_ip(address)
+                log.info('banned ip: {}'.format(address))
                 return b''
 
             try:
                 self.pr._verify_signature(enc_request, sign, pub_key)
             except BadRequest:
-                # Если подпись неверная, игнорируем
+                # Если подпись неверная, блокируем IP-адрес отправителя
                 log.error('incorrect signature')
+                self.pr._ban_ip(address)
+                log.info('banned ip: {}'.format(address))
                 return b''
 
         # Вставляем в запрос IP-адрес после ID запроса
@@ -131,8 +143,10 @@ class RequestHandler:
             # Запускаем обработчик и получаем ответ
             response = handler(*data)
         except (TypeError, IndexError, BadRequest):
-            # Если в запросе логическая ошибка, игнорируем
+            # Если в запросе логическая ошибка, блокируем IP-адрес отправителя
             log.error('bad request from {}: {}'.format(address, request))
+            self.pr._ban_ip(address)
+            log.info('banned ip: {}'.format(address))
             return b''
 
         # Следующий блок кода может быть небезопасен
@@ -149,6 +163,7 @@ class RequestHandler:
         except OverflowError:
             log.error('server response was too large to encrypt')
             log.debug('response: {}'.format(response))
+
         log.info('encrypted response successfully')
 
         # Записываем текущую дату

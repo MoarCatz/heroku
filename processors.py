@@ -193,6 +193,15 @@ class Processor:
 
         c.close()
 
+    def _ban_ip(self, ip):
+        """Заносит IP-адрес ip в таблицу tables с текущей датой"""
+        c = self.db.cursor()
+        stamp = datetime.now().timestamp()
+        c.execute('''INSERT INTO banned VALUES(%s, %s)''',
+                  (ip, int(stamp)))
+
+        c.close()
+
     def _remove_from(self, nick, item, sect):
         """Удаляет элемент item из графы sect в записи с именем nick
         Вызывает BadRequest, если пользователь nick не найден
@@ -329,7 +338,7 @@ class Processor:
         c = self.db.cursor()
         stamp = datetime.now().timestamp()
         c.execute('''UPDATE sessions SET last_active = %s
-                     WHERE ip = %s''', (str(stamp), address))
+                     WHERE ip = %s''', (int(stamp), address))
 
         c.close()
 
