@@ -30,10 +30,12 @@ class RequestHandler:
         cc.search_msg:                pr.search_msg,
         cc.get_add_requests:          pr.add_requests,
         cc.decline_add_request:       pr.decline_add_request,
-        cc.set_image:                 pr.set_image
+        cc.set_image:                 pr.set_image,
+        cc.is_up:                     pr.is_up
     }
     set_image_code = str(cc.set_image).encode()
     profile_info_code = str(sc.profile_info).encode()
+    is_up_code = str(cc.is_up).encode()
 
     o_codes = {cc.register, cc.login}
 
