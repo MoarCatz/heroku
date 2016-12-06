@@ -3,7 +3,6 @@
      
 [![Build Status](https://travis-ci.org/MoarCatz/chat-server.svg?branch=master)](https://travis-ci.org/MoarCatz/chat-server)
 [![codecov](https://codecov.io/gh/MoarCatz/chat-server/branch/master/graph/badge.svg)](https://codecov.io/gh/MoarCatz/chat-server)
-[![](https://img.shields.io/github/issues-closed-raw/MoarCatz/chat-server.svg)](https://github.com/MoarCatz/chat-server)
      
 # Chat-Server
 Backend for encrypted chat service.
