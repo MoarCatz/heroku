@@ -21,30 +21,32 @@ Here is a list of Python dependencies we're using right now:
 ### Deploying
 Here is a step by step example of how you can get this server up and running:
 
-#### From Precompiled Package (recommended)
-1. Head over to the latest release and grab the most suitable package for you. 
-2. Run the file you've just downloaded. 
-3. Done'n'done :saxophone::turtle:
+#### Deploy to Heroku
+Everything you need is to push the button below. You're welcome :smiley_cat:
+
+[![Deploy](https://www.herokucdn.com/deploy/button.svg)](https://heroku.com/deploy)
 
 #### Using The Source Code
-You can download the latest code from `master` using the special button on this page.  
-_**Caution**_: development version is unstable and may contain errors of any kind. To improve security and user experience, we **highly** recommend you not to use the source code directly, but instead grab a package from _Releases_ :smiley_cat:
-
-#### Packet Manager
-Coming later :zap:
+Let's go through the terminal commands that will bring you to the running app:
+```
+git clone https://github.com/MoarCatz/chat-server.git  ## Clone the code from Github
+cd chat-server/
+python3 installer.py ## Install the server
+python3 request_handler.py ## Run
+```
 
 ## Features
-Simple yet powerful chat offers you to:
+This server can:
 
-* Chat with your frineds using encryption :lock:
-* Stay online when you want - we do not use a lot of bandwidth at your computer :metal:
-* Be up-to-date constantly thanks to the WebSocket protocol :hourglass_flowing_sand:
+* Receive requests from clients using WebSeckots in realtime :zap:
+* Decrypt and encrypt responses and replies :lock:
+* Store the data in the database :file_folder:
 
 ## Contributing
 We will be happy to see your PRs. If you can, please consider these topics we would also like to recieve help with:
 
+- [ ] Asynchronious programming
 - [ ] Testing
-- [ ] Fresh UI
 - [ ] Performance
 - [ ] Security Issues
 
