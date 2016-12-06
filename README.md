@@ -29,16 +29,16 @@ Everything you need is to push the button below. You're welcome :smiley_cat:
 #### Using The Source Code
 Let's go through the terminal commands that will bring you to the running app:
 ```
-git clone https://github.com/MoarCatz/chat-server.git  ## Clone the code from Github
+git clone https://github.com/MoarCatz/chat-server.git  # Clone the code from Github
 cd chat-server/
-python3 installer.py ## Install the server
-python3 request_handler.py ## Run
+python3 installer.py  # Install the server
+python3 request_handler.py  # Run
 ```
 
 ## Features
 This server can:
 
-* Receive requests from clients using WebSeckots in realtime :zap:
+* Receive requests from clients using WebSockets in realtime :zap:
 * Decrypt and encrypt responses and replies :lock:
 * Store the data in the database :file_folder:
 
